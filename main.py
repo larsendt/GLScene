@@ -10,6 +10,7 @@ import shader
 import time
 import random
 import scene
+import postprocessing
 
 class GLWrapper(object):
 	def __init__(self):
@@ -44,6 +45,10 @@ class GLWrapper(object):
 		self.zoom = 0
 		self.fps = 60
 		self.idle_tick = 1.0/self.fps
+		self.scr_width = glutGet(GLUT_WINDOW_WIDTH)
+		self.scr_height = glutGet(GLUT_WINDOW_HEIGHT)
+		self.pp = postprocessing.PostProcessor(1, 1, self.scr_width, self.scr_height)
+		self.using_pp = False
 	
 	def begin(self):
 		glutMainLoop()
@@ -56,6 +61,10 @@ class GLWrapper(object):
 	
 	def draw(self):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+		
+		if self.using_pp:
+			self.pp.bind()
+			
 		glLoadIdentity();
 		
 		glTranslatef(0.0, 0.0, -2.0)
@@ -68,6 +77,10 @@ class GLWrapper(object):
 		self.shader.setUniform1f("seed", self.seed)
 		self.scene.draw()
 		self.shader.release()
+		
+		if self.using_pp:
+			self.pp.release()
+			self.pp.draw()
 	
 		glFlush();
 		glutSwapBuffers();
@@ -85,6 +98,10 @@ class GLWrapper(object):
 		#glOrtho(-self.screen_width, self.screen_width, -1, 1, -1, 5)
 		glMatrixMode(GL_MODELVIEW)
 		glLoadIdentity()
+		
+		self.scr_width = glutGet(GLUT_WINDOW_WIDTH)
+		self.scr_height = glutGet(GLUT_WINDOW_HEIGHT)
+		self.pp.resize(self.screen_width, 1, self.scr_width, self.scr_height)
 		
 	def mouse_drag(self, x, y):
 		dx = x - self.last_mouse_pos[0]
@@ -106,6 +123,8 @@ class GLWrapper(object):
 		if key == '\x1b': #escape key
 			print "quit"
 			sys.exit(0)
+		elif key == 'p':
+			self.using_pp = not self.using_pp
 			
 	
 def main():

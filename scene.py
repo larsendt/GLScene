@@ -9,9 +9,6 @@ import lighting
 
 class Scene(object):
 	def __init__(self):
-		self.mat_specular = (0.5, 0.5, 0.3, 1.0);
-		self.mat_diffuse = (0.3, 0.3, 0.3, 1.0);
-		self.mat_emission = (0.0, 0.0, 0.0, 0.0);
 		self.light = lighting.Light(GL_LIGHT0)
 
 		self.sphere = self.create_sphere()
@@ -25,9 +22,12 @@ class Scene(object):
 		glPushMatrix()
 		ring = glGenLists(1)
 		glNewList(ring, GL_COMPILE)
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, self.mat_diffuse)
-		glMaterialfv(GL_FRONT, GL_SPECULAR, self.mat_specular)
-		glMaterialfv(GL_FRONT, GL_EMISSION, self.mat_emission)
+		mat_specular = (0.5, 0.5, 0.3, 1.0);
+		mat_diffuse = (0.3, 0.3, 0.3, 1.0);
+		mat_emission = (0.0, 0.0, 0.0, 0.0);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse)
+		glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular)
+		glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission)
 		glColor3f(0.0, 0.2, 0.5)
 		glScalef(scale, scale, scale)
 		glColor3f(0.5, 0.3, 0.0)		
@@ -40,9 +40,12 @@ class Scene(object):
 		glPushMatrix()
 		sphere = glGenLists(1)
 		glNewList(sphere, GL_COMPILE)
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, self.mat_diffuse)
-		glMaterialfv(GL_FRONT, GL_SPECULAR, self.mat_specular)
-		glMaterialfv(GL_FRONT, GL_EMISSION, self.mat_emission)
+		mat_specular = (0.0, 0.0, 0.0, 1.0);
+		mat_diffuse = (0.3, 0.3, 0.3, 1.0);
+		mat_emission = (0.0, 0.0, 0.0, 0.0);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse)
+		glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular)
+		glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission)
 		glColor3f(0.2, 0.2, 0.2)
 		objects.sphere()
 		glEndList()
