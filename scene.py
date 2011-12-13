@@ -4,6 +4,7 @@ from OpenGL.GLU import *
 
 import objects
 import lighting
+import loadObj
 
 
 
@@ -17,6 +18,9 @@ class Scene(object):
 		self.ring3 = self.create_ring(9)
 		
 		self.counter = 0
+		v, n, e = loadObj.loadObj("shitty.obj")
+		self.monkey = loadObj.compileMesh(v,n,e)
+		
 	
 	def create_ring(self, scale):
 		glPushMatrix()
@@ -60,7 +64,7 @@ class Scene(object):
 	def draw(self):				
 		self.light.illuminate()
 		glPushMatrix()
-		glCallList(self.sphere)
+		#glCallList(self.sphere)
 		glPopMatrix()
 		glPushMatrix()
 		glRotatef(self.counter, 1, 0, 0)
@@ -74,6 +78,11 @@ class Scene(object):
 		glRotatef(self.counter, 1, 1, 0)
 		glCallList(self.ring3)
 		glPopMatrix()
+		glPushMatrix()
+		glScale(.5,.5,.5)
+		glColor(.3,.5,1)
+		glCallList(self.monkey)
 		
+		glPopMatrix()
 		
 

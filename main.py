@@ -10,7 +10,7 @@ import shader
 import time
 import random
 import scene
-import postprocessing
+##import postprocessing
 
 class GLWrapper(object):
 	def __init__(self):
@@ -47,7 +47,7 @@ class GLWrapper(object):
 		self.idle_tick = 1.0/self.fps
 		self.scr_width = glutGet(GLUT_WINDOW_WIDTH)
 		self.scr_height = glutGet(GLUT_WINDOW_HEIGHT)
-		self.pp = postprocessing.PostProcessor(1, 1, self.scr_width, self.scr_height)
+		##self.pp = postprocessing.PostProcessor(1, 1, self.scr_width, self.scr_height)
 		self.using_pp = False
 	
 	def begin(self):
@@ -78,9 +78,9 @@ class GLWrapper(object):
 		self.scene.draw()
 		self.shader.release()
 		
-		if self.using_pp:
-			self.pp.release()
-			self.pp.draw()
+		##if self.using_pp:
+			##self.pp.release()
+			##self.pp.draw()
 	
 		glFlush();
 		glutSwapBuffers();
