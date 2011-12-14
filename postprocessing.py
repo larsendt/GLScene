@@ -74,8 +74,6 @@ class PostProcessor(object):
 		glActiveTexture(GL_TEXTURE0)
 		glBindTexture(GL_TEXTURE_2D, self.tex)
 		self.bloom_shader.setUniform1i("texture", 0)
-		self.bloom_shader.setUniform1f("screen_width", self.width)
-		self.bloom_shader.setUniform4f("light_pos", self.light_pos[0], self.light_pos[1], self.light_pos[2], self.light_pos[3])
 		glDisable(GL_LIGHTING)
 		glColor3f(1, 1, 1)
 		

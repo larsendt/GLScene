@@ -7,10 +7,10 @@ import math
 
 class Light(object):
 	def __init__(self, light_id):
-		self.ambient = (0.3, 0.3, 0.3, 1.0)
-		self.diffuse = (0.5, 0.5, 0.5, 1.0)
+		self.ambient = (0.5, 0.5, 0.5, 1.0)
+		self.diffuse = (0.8, 0.8, 0.8, 1.0)
 		self.specular = (1.0, 1.0, 1.0, 1.0)
-		self.position = [3.0, 0.0, 3.0, 1.0]
+		self.position = [2.0, 0.0, 2.0, 1.0]
 		self.light_id = light_id
 		self.mat_specular = (0.0, 0.0, 0.0, 1.0);
 		self.mat_diffuse = (0.3, 0.3, 0.3, 1.0);
@@ -46,7 +46,7 @@ class Light(object):
 	def illuminate(self):
 		glPushMatrix()
 
-		glRotatef(90, 0, 0, 1)
+		glRotatef(30, 0, 0, 1)
 		glRotatef(self.counter, 0, 1, 0)
 		glTranslatef(self.position[0], self.position[1], self.position[2])
 		glCallList(self.sphere)

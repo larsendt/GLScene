@@ -25,13 +25,12 @@ def load_mesh(filename):
 	display_handle = glGenLists(1)
 	glNewList(display_handle, GL_COMPILE)
 	
-	mat_specular = (0.0, 0.0, 0.0, 1.0);
+	mat_specular = (0.3, 0.3, 0.3, 1.0);
 	mat_diffuse = (1.0, 1.0, 1.0, 1.0);
 	mat_emission = (0.0, 0.0, 0.0, 1.0);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse)
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular)
 	glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission)
-	glColor3f(1.0, 1.0, 1.0)
 	
 	glBegin(GL_TRIANGLES)
 

@@ -8,9 +8,10 @@ from OpenGL.GLUT import *
 import sys
 import shader
 import time
+import math
 import random
 import scene
-##import postprocessing
+import postprocessing
 
 class GLWrapper(object):
 	def __init__(self):
@@ -18,6 +19,7 @@ class GLWrapper(object):
 		glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE)
 		glutInitWindowSize(800, 600)
 		glutCreateWindow('Dynamic Skybox')
+		glutFullScreen()
 		glutDisplayFunc(self.draw)
 		glutMotionFunc(self.mouse_drag)
 		glutKeyboardFunc(self.keyboard)
@@ -47,7 +49,7 @@ class GLWrapper(object):
 		self.idle_tick = 1.0/self.fps
 		self.scr_width = glutGet(GLUT_WINDOW_WIDTH)
 		self.scr_height = glutGet(GLUT_WINDOW_HEIGHT)
-		##self.pp = postprocessing.PostProcessor(1, 1, self.scr_width, self.scr_height)
+		#self.pp = postprocessing.PostProcessor(1, 1, self.scr_width, self.scr_height)
 		self.using_pp = False
 	
 	def begin(self):
@@ -62,8 +64,8 @@ class GLWrapper(object):
 	def draw(self):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 		
-		if self.using_pp:
-			self.pp.bind()
+		#if self.using_pp:
+		#	self.pp.bind()
 			
 		glLoadIdentity();
 		
@@ -78,9 +80,9 @@ class GLWrapper(object):
 		self.scene.draw()
 		self.shader.release()
 		
-		##if self.using_pp:
-			##self.pp.release()
-			##self.pp.draw()
+		#if self.using_pp:
+		#	self.pp.release()
+		#	self.pp.draw()
 	
 		glFlush();
 		glutSwapBuffers();
@@ -95,7 +97,6 @@ class GLWrapper(object):
 		glMatrixMode(GL_PROJECTION)
 		glLoadIdentity()
 		gluPerspective(45, self.screen_width, 0.5, 10)
-		#glOrtho(-self.screen_width, self.screen_width, -1, 1, -1, 5)
 		glMatrixMode(GL_MODELVIEW)
 		glLoadIdentity()
 		
@@ -124,7 +125,11 @@ class GLWrapper(object):
 			print "quit"
 			sys.exit(0)
 		#elif key == 'p':
-		#	self.using_pp = not self.using_pp
+			#self.using_pp = not self.using_pp
+			#if self.using_pp:
+			#	print "Postprocessing enabled"
+			#else:
+			#	print "Postprocessing disabled"
 			
 	
 def main():
