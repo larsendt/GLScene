@@ -101,7 +101,7 @@ class GLWrapper(object):
 		
 		self.scr_width = glutGet(GLUT_WINDOW_WIDTH)
 		self.scr_height = glutGet(GLUT_WINDOW_HEIGHT)
-		self.pp.resize(self.screen_width, 1, self.scr_width, self.scr_height)
+		#self.pp.resize(self.screen_width, 1, self.scr_width, self.scr_height)
 		
 	def mouse_drag(self, x, y):
 		dx = x - self.last_mouse_pos[0]
@@ -123,8 +123,8 @@ class GLWrapper(object):
 		if key == '\x1b': #escape key
 			print "quit"
 			sys.exit(0)
-		elif key == 'p':
-			self.using_pp = not self.using_pp
+		#elif key == 'p':
+		#	self.using_pp = not self.using_pp
 			
 	
 def main():

@@ -4,7 +4,7 @@ from OpenGL.GLU import *
 
 import objects
 import lighting
-import loadObj
+import meshobj
 
 
 
@@ -18,8 +18,7 @@ class Scene(object):
 		self.ring3 = self.create_ring(9)
 		
 		self.counter = 0
-		v, n, e = loadObj.loadObj("shitty.obj")
-		self.monkey = loadObj.compileMesh(v,n,e)
+		self.monkey = meshobj.MeshObject("meshes/cube.obj").display_handle
 		
 	
 	def create_ring(self, scale):
