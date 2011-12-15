@@ -6,15 +6,15 @@ from ctypes import *
 import shader
 
 class PostProcessor(object):
-	def __init__(self, width, height, scr_width, scr_height):
+	def __init__(self, width, height, scr_width, scr_height, vert_shader, frag_shader):
 		self.width = width
 		self.height = height	
 		self.scr_width = scr_width
 		self.scr_height = scr_height
-		self.light_pos = (0, 0, 0, 1)
+		self.light_pos = []
 		self.gen_buffers()
 		
-		self.bloom_shader = shader.Shader("./shaders/bloom.vert", "./shaders/bloom.frag")
+		self.shader_program = shader.Shader(vert_shader, frag_shader)
 		
 	def resize(self, width, height, scr_width, scr_height):
 		self.width = width
@@ -70,10 +70,11 @@ class PostProcessor(object):
 		glMatrixMode(GL_MODELVIEW)
 		glLoadIdentity()
 	
-		self.bloom_shader.bind()
+		self.shader_program.bind()
 		glActiveTexture(GL_TEXTURE0)
 		glBindTexture(GL_TEXTURE_2D, self.tex)
-		self.bloom_shader.setUniform1i("texture", 0)
+		self.shader_program.setUniform1i("texture", 0)
+		self.shader_program.setUniform4f("light_coords", self.light_pos[0], self.light_pos[1], self.light_pos[2], self.light_pos[3])
 		glDisable(GL_LIGHTING)
 		glColor3f(1, 1, 1)
 		
@@ -88,7 +89,7 @@ class PostProcessor(object):
 		glVertex3f(-self.width, self.height, 0)
 		glEnd()
 		
-		self.bloom_shader.release()
+		self.shader_program.release()
 		
 		glEnable(GL_LIGHTING)
 		glBindTexture(GL_TEXTURE_2D, 0)

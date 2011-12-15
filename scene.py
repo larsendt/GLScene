@@ -26,16 +26,16 @@ class Scene(object):
 				self.scale_counter = 0
 				self.increasing = True
 				
-		self.rotate_counter = (self.rotate_counter + 0.1) % 360
+		self.rotate_counter = (self.rotate_counter + 0.05) % 360
 
 		self.light.update()
 		
 	def draw(self):				
 		self.light.illuminate()
-
+		
 		glPushMatrix()
 		glRotatef(-self.rotate_counter, 0, 1, 0)
-		glScalef(1, self.scale_counter/self.change_speed, 1)
+		#glScalef(1, self.scale_counter/self.change_speed, 1)
 		glColor3f(0.1, 0.1, 0.1)		
 		glCallList(self.monkey)
 		glPopMatrix()

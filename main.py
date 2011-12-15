@@ -27,6 +27,8 @@ class GLWrapper(object):
 		glutReshapeFunc(self.reshape)
 		glutIdleFunc(self.idle)
 		
+		glClearColor(0.1, 0.2, 0.5, 1.0)
+		
 		glEnable(GL_DEPTH_TEST)
 		glEnable(GL_BLEND)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -49,8 +51,9 @@ class GLWrapper(object):
 		self.idle_tick = 1.0/self.fps
 		self.scr_width = glutGet(GLUT_WINDOW_WIDTH)
 		self.scr_height = glutGet(GLUT_WINDOW_HEIGHT)
-		#self.pp = postprocessing.PostProcessor(1, 1, self.scr_width, self.scr_height)
+		self.first_pass = postprocessing.PostProcessor(1, 1, self.scr_width, self.scr_height, "./shaders/god_rays.vert", "./shaders/god_rays.frag")
 		self.using_pp = False
+		self.paused = False
 	
 	def begin(self):
 		glutMainLoop()
@@ -58,14 +61,15 @@ class GLWrapper(object):
 	def idle(self):
 		if (time.clock() - self.time) > self.idle_tick:
 			self.time = time.clock()
-			self.scene.update()
+			if not self.paused:
+				self.scene.update()
 			glutPostRedisplay();
 	
 	def draw(self):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 		
-		#if self.using_pp:
-		#	self.pp.bind()
+		if self.using_pp:
+			self.first_pass.bind()
 			
 		glLoadIdentity();
 		
@@ -80,9 +84,10 @@ class GLWrapper(object):
 		self.scene.draw()
 		self.shader.release()
 		
-		#if self.using_pp:
-		#	self.pp.release()
-		#	self.pp.draw()
+		if self.using_pp:
+			self.first_pass.release()
+			self.first_pass.light_pos = self.scene.light.position
+			self.first_pass.draw()
 	
 		glFlush();
 		glutSwapBuffers();
@@ -102,7 +107,7 @@ class GLWrapper(object):
 		
 		self.scr_width = glutGet(GLUT_WINDOW_WIDTH)
 		self.scr_height = glutGet(GLUT_WINDOW_HEIGHT)
-		#self.pp.resize(self.screen_width, 1, self.scr_width, self.scr_height)
+		self.first_pass.resize(self.screen_width, 1, self.scr_width, self.scr_height)
 		
 	def mouse_drag(self, x, y):
 		dx = x - self.last_mouse_pos[0]
@@ -122,14 +127,16 @@ class GLWrapper(object):
 	
 	def keyboard(self, key, x, y):
 		if key == '\x1b': #escape key
-			print "quit"
+			print "Quit"
 			sys.exit(0)
-		#elif key == 'p':
-			#self.using_pp = not self.using_pp
-			#if self.using_pp:
-			#	print "Postprocessing enabled"
-			#else:
-			#	print "Postprocessing disabled"
+		elif key == 'p':
+			self.using_pp = not self.using_pp
+			if self.using_pp:
+				print "Postprocessing enabled"
+			else:
+				print "Postprocessing disabled"
+		elif key == ' ':
+			self.paused = not self.paused
 			
 	
 def main():
