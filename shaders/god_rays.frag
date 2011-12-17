@@ -3,9 +3,9 @@ varying vec2 light_pos;
 
 const int NUM_SAMPLES = 100;
 const float Density = 0.8;
-const float Weight = 0.05;
+const float Weight = 0.1;
 const float Decay = 0.95;
-const float Exposure = 0.5;
+const float Exposure = 0.6;
 
 void main()
 {  
@@ -42,5 +42,8 @@ void main()
 		illuminationDecay *= Decay;  
 	}  
 	// Output final color with a further scale control factor.  
-	gl_FragColor = color * Exposure;
+	color *= Exposure;
+	float avg = (color.r + color.g + color.b) / 3.0;
+	
+	gl_FragColor = mix(texture2D(texture, gl_TexCoord[0].xy), color, pow(avg, 2.0));
 }  
